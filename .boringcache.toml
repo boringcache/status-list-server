@@ -1,0 +1,29 @@
+workspace = "boringcache/benchmarks"
+
+[proxy]
+metadata-hints = ["project=status-list-server"]
+
+[entries.cargo-target]
+kind = "cargo-target"
+tag = "status-list-server-tests-rolling-20260905-target"
+path = "target"
+
+[entries.cargo-registry]
+tag = "status-list-server-tests-rolling-20260905-registry"
+
+[entries.cargo-git]
+tag = "status-list-server-tests-rolling-20260905-git"
+
+[profiles.cargo]
+entries = ["cargo-target", "cargo-registry", "cargo-git"]
+
+[adapters.sccache]
+tag = "status-list-server-tests-rolling-20260905-compiler"
+
+[adapters.cargo]
+tag = "status-list-server-tests-rolling-20260905"
+profiles = ["cargo"]
+compiler-cache = "sccache"
+command = ["cargo", "nextest", "run", "--workspace", "--all-targets", "--all-features"]
+fail-on-cache-error = true
+metadata-hints = ["tool=sccache", "lane=all-feature-tests"]
